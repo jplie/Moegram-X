@@ -45,6 +45,9 @@ import java.util.List;
 import me.vkryl.android.widget.FrameLayoutFix;
 
 public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener, StretchyHeaderView, TextWatcher, HeaderView.OffsetChangeListener {
+
+  private static final int DEFAULT_MAX_BUBBLE_LINES = 2;
+
   private final HeaderEditText editText;
   private final ScrollView scrollView;
   private final BubbleWrapView bubbleWrap;
@@ -55,6 +58,15 @@ public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener
   private final int maxBubbleHeight;
 
   public BubbleHeaderView (Context context, @NonNull Tdlib tdlib) {
+    this(context, tdlib, DEFAULT_MAX_BUBBLE_LINES);
+  }
+
+  public static int maxBubbleHeight (int maxBubbleLines) {
+    int bubbleHeight = Screen.dp(BubbleView.RADIUS) * 2;
+    return Screen.dp(BubbleWrapView.START_Y) + Screen.dp(BubbleWrapView.SPACING) * (maxBubbleLines - 1) + bubbleHeight * maxBubbleLines;
+  }
+
+  public BubbleHeaderView (Context context, @NonNull Tdlib tdlib, int maxBubbleLines) {
     super(context);
     this.tdlib = tdlib;
 
@@ -67,9 +79,8 @@ public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener
     bubbleWrap.setHeaderView(this);
     bubbleWrap.setLayoutParams(params);
 
-    int bubbleHeight = Screen.dp(BubbleView.RADIUS) * 2;
     // TODO: expand maxBubbleHeight if users starts scrolling manually, and shrink back with delay once finished
-    this.maxBubbleHeight = Screen.dp(BubbleWrapView.START_Y) + Screen.dp(BubbleWrapView.SPACING) + bubbleHeight * 2;
+    this.maxBubbleHeight = maxBubbleHeight(maxBubbleLines);
     params = FrameLayoutFix.newParams(ViewGroup.LayoutParams.MATCH_PARENT, maxBubbleHeight);
     if (Lang.rtl()) {
       params.rightMargin = Screen.dp(60f);
@@ -83,6 +94,7 @@ public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener
         return ev.getAction() == MotionEvent.ACTION_DOWN ? (ev.getY() < lastHeight && super.onTouchEvent(ev)) : super.onTouchEvent(ev);
       }
     };
+    scrollView.setClipToPadding(false);
     scrollView.setVerticalScrollBarEnabled(false);
     scrollView.addView(bubbleWrap);
     scrollView.setLayoutParams(params);
@@ -108,7 +120,8 @@ public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener
   @Override
   public void onHeaderOffsetChanged (HeaderView headerView, int newOffset) {
     currentTopOffset = newOffset;
-    Views.setTopMargin(scrollView, newOffset);
+    Views.setLayoutHeight(scrollView, maxBubbleHeight + newOffset);
+    scrollView.setPadding(0, newOffset, 0, 0);
     Views.setTopMargin(editText, newOffset);
   }
 
@@ -123,7 +136,7 @@ public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener
     if (bubbleWrap != null) {
       bubbleWrap.invalidate();
     }
-    if (scrollView != null && Views.setMargins((FrameLayout.LayoutParams) scrollView.getLayoutParams(), Lang.rtl() ? 0 : Screen.dp(60f), currentTopOffset, Lang.rtl() ? Screen.dp(60f) : 0, 0)) {
+    if (scrollView != null && Views.setMargins((FrameLayout.LayoutParams) scrollView.getLayoutParams(), Lang.rtl() ? 0 : Screen.dp(60f), 0, Lang.rtl() ? Screen.dp(60f) : 0, 0)) {
       Views.updateLayoutParams(scrollView);
     }
   }
@@ -147,7 +160,7 @@ public class BubbleHeaderView extends FrameLayoutFix implements RtlCheckListener
     scrollView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
       @Override
       public void onLayoutChange (View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-        scrollView.scrollTo(0, bubbleWrap.getMeasuredHeight() - scrollView.getMeasuredHeight());
+        scrollView.scrollTo(0, bubbleWrap.getMeasuredHeight() - scrollView.getMeasuredHeight() + scrollView.getPaddingTop());
         scrollView.removeOnLayoutChangeListener(this);
       }
     });

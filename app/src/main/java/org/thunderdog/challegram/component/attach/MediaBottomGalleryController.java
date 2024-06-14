@@ -250,6 +250,11 @@ public class MediaBottomGalleryController extends MediaBottomBaseController<Medi
   }
 
   @Override
+  public boolean allowShowCaptionAboveMedia () {
+    return !ChatId.isSecret(getOutputChatId());
+  }
+
+  @Override
   protected void onUpdateBottomBarFactor (float bottomBarFactor, float counterFactor, float y) {
     float factor = Math.min(bottomBarFactor, 1f - counterFactor);
     if (cameraBadgeView != null) {
@@ -542,7 +547,7 @@ public class MediaBottomGalleryController extends MediaBottomBaseController<Medi
   }
 
   @Override
-  public boolean sendSelectedItems (View view, ArrayList<ImageFile> images, TdApi.MessageSendOptions options, boolean disableMarkdown, boolean asFiles, boolean hasSpoiler) {
+  public boolean sendSelectedItems (View view, ArrayList<ImageFile> images, TdApi.MessageSendOptions options, boolean disableMarkdown, boolean asFiles, boolean showCaptionAboveMedia, boolean hasSpoiler) {
     // TODO delete other
     return mediaLayout.sendPhotosOrVideos(view, images, false, options, disableMarkdown, asFiles, true);
   }
@@ -560,6 +565,16 @@ public class MediaBottomGalleryController extends MediaBottomBaseController<Medi
   @Override
   public void onHideMediaStateChanged (boolean hideMedia) {
     mediaLayout.setNeedSpoiler(hideMedia);
+  }
+
+  @Override
+  public boolean showCaptionAboveMedia () {
+    return mediaLayout.showCaptionAboveMedia();
+  }
+
+  @Override
+  public void onShowCaptionAboveMediaStateChanged (boolean showCaptionAboveMedia) {
+    mediaLayout.setShowCaptionAboveMedia(showCaptionAboveMedia);
   }
 
   @Override

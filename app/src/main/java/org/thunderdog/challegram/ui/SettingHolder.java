@@ -601,6 +601,9 @@ public class SettingHolder extends RecyclerView.ViewHolder {
       case ListItem.TYPE_PADDING: {
         PaddingView paddingView = new PaddingView(context);
         paddingView.setLayoutParams(FrameLayoutFix.newParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        if (themeProvider != null) {
+          themeProvider.addThemeInvalidateListener(paddingView);
+        }
         return new SettingHolder(paddingView);
       }
       case ListItem.TYPE_SEPARATOR_FULL:
@@ -1561,7 +1564,7 @@ public class SettingHolder extends RecyclerView.ViewHolder {
           callsState.setLayoutParams(params);
           callsState.setCompoundDrawablesWithIntrinsicBounds(callIcon, null, null, null);
           callsState.setCompoundDrawablePadding(Screen.dp(8));
-          callsState.setText("Calls");
+          callsState.setText(Lang.getString(R.string.SessionAcceptsCalls));
           callsState.setTextColor(Theme.getColor(ColorId.textNeutral));
           callsState.setAllCaps(true);
           callsState.setGravity(Gravity.CENTER_VERTICAL);

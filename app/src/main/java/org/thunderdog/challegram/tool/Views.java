@@ -834,6 +834,16 @@ public class Views {
     return false;
   }
 
+  public static void setLayoutHeight (View view, int height) {
+    if (view != null) {
+      ViewGroup.LayoutParams params = view.getLayoutParams();
+      if (params != null && params.height != height) {
+        params.height = height;
+        view.setLayoutParams(params);
+      }
+    }
+  }
+
   public static void setTopMargin (View view, int margin) {
     if (view != null) {
       ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -874,11 +884,31 @@ public class Views {
     }
   }
 
+  public static int getLeftMargin (View view) {
+    if (view != null) {
+      ViewGroup.LayoutParams params = view.getLayoutParams();
+      if (params instanceof ViewGroup.MarginLayoutParams) {
+        return ((ViewGroup.MarginLayoutParams) params).leftMargin;
+      }
+    }
+    return 0;
+  }
+
   public static int getTopMargin (View view) {
     if (view != null) {
       ViewGroup.LayoutParams params = view.getLayoutParams();
       if (params instanceof ViewGroup.MarginLayoutParams) {
         return ((ViewGroup.MarginLayoutParams) params).topMargin;
+      }
+    }
+    return 0;
+  }
+
+  public static int getRightMargin (View view) {
+    if (view != null) {
+      ViewGroup.LayoutParams params = view.getLayoutParams();
+      if (params instanceof ViewGroup.MarginLayoutParams) {
+        return ((ViewGroup.MarginLayoutParams) params).rightMargin;
       }
     }
     return 0;

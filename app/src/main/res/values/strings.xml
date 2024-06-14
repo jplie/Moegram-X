@@ -950,6 +950,7 @@
   <string name="NoVoiceMessages">No Voice messages</string>
   <string name="NoFiles">No Files</string>
   <string name="NoMusic">No Music</string>
+  <string name="NoFilter">No Filter</string>
   <string name="Other">Other</string>
   <string name="AutoplayGifs">Autoplay GIFs</string>
   <string name="QuickTranslate">Quick translate</string>
@@ -2931,7 +2932,7 @@
   <string name="HelpEmailError">Please send an email to %1$s and tell us about your problem</string>
 
   <string name="email_SmsHelp">sms@telegram.org</string>
-  <string name="email_LoginHelp">login@telegram.org</string>
+  <string name="email_LoginHelp">recover@telegram.org</string>
 
   <string name="email_LoginTooLong_subject">moeGramX connection issue</string>
   <string name="email_LoginTooLong_text">My Internet service provider is: (please enter the name)\n\nI\'ve just installed the application and tried to start messaging, but moeGramX is unable to connect to the server. Please help.\n\nApp version: %1$s\nLanguage: %2$s\nAwait time: %3$s\nSystem Language: %4$s\nSystem Version: %5$s</string>
@@ -3804,6 +3805,10 @@
   <string name="ContactStateMutual">%1$s and you have added each other in the contacts list.</string>
   <string name="ContactStateOutgoing">%1$s is in your contacts list.</string>
 
+  <string name="ChatTypeMutualContact">Mutual contact</string>
+  <string name="ChatTypeContact">Contact</string>
+  <string name="ChatTypeNonContact">Non-Contact</string>
+
   <string name="ContactStateMutualNoPhone">%1$s and you have each other in the contacts list, but they do not share the phone number with you.</string>
   <string name="ContactStateOutgoingNoPhone">You do not have access to %1$s\'s phone number.</string>
 
@@ -3815,6 +3820,15 @@
 
   <string name="ArchiveChat">Archive Chat</string>
   <string name="UnarchiveChat">Unarchive Chat</string>
+
+  <string name="ArchiveX_user">Archive chat with %1$s?</string>
+  <string name="ArchiveX_chat">Archive %1$s?</string>
+  <string name="ArchiveXInFolder_user">Archive chat with %1$s? It will remain in the list as current folder does not exclude archived chats.</string>
+  <string name="ArchiveXInFolder_chat">Archive %1$s? It will remain in the list as current folder does not exclude archived chats.</string>
+  <string name="UnarchiveX_user">Unarchive chat with %1$s?</string>
+  <string name="UnarchiveX_chat">Unarchive %1$s?</string>
+  <string name="UnarchiveXInFolder_user">Unarchive chat with %1$s? It will remain in the current chat folder.</string>
+  <string name="UnarchiveXInFolder_chat">Unarchive %1$s? It will remain in the current chat folder.</string>
 
   <string name="ReportLocation">Group unrelated to location?</string>
   <string name="ReportLocationTitle">Report unrelated group</string>
@@ -3976,6 +3990,10 @@
   <string name="ArchiveXChats_other">Archive %1$s chats</string>
   <string name="UnarchiveXChats_one">Unarchive %1$s chat</string>
   <string name="UnarchiveXChats_other">Unarchive %1$s chats</string>
+  <string name="ArchiveXChatsInFolder_one">Archive %1$s chat? It will remain in the list as current folder does not exclude archived chats.</string>
+  <string name="ArchiveXChatsInFolder_other">Archive %1$s chats? They will remain in the list as current folder does not exclude archived chats.</string>
+  <string name="UnarchiveXChatsInFolder_one">Unarchive %1$s chat? It will remain in the current chat folder.</string>
+  <string name="UnarchiveXChatsInFolder_other">Unarchive %1$s chats? They will remain the current chat folder.</string>
   <string name="ArchivedXChats_one">Archived %1$s chat</string>
   <string name="ArchivedXChats_other">Archived %1$s chats</string>
   <string name="UnarchivedXChats_one">Unarchived %1$s chat</string>
@@ -4754,6 +4772,7 @@
   <string name="SessionLastLogin">Last Activity</string>
   <string name="SessionAccept">Accept</string>
   <string name="SessionReject">Reject</string>
+  <string name="SessionAcceptsCalls">Calls</string>
 
   <string name="SessionAccepts">What can be received on this device?</string>
   <string name="SessionSecretChats">Secret Chats</string>
@@ -5082,6 +5101,10 @@
   <string name="ShowXMore_one">%1$s more</string>
   <string name="ShowXMore_other">%1$s more</string>
 
+  <string name="ArchiveAppearanceTitle">Appearance</string>
+  <string name="ArchiveAppearanceToggle">Show as folder</string>
+  <string name="ArchiveAppearanceHint">Display archive as a local folder. You can change its position in [settings](tg://settings/folders).</string>
+
   <string name="ChatTypes">Chat types</string>
   <string name="ChatFolders">Chat Folders</string>
   <string name="ChatFoldersInfo">Create folders for different groups of chats and quickly switch between them.</string>
@@ -5096,7 +5119,8 @@
   <string name="NewFolder">New Folder</string>
   <string name="CreateNewFolder">Create New Folder</string>
   <string name="HideFolder">Hide Folder</string>
-  <string name="HideFolderInfo">To display %1$s folder again, go to %2$s > %3$s</string>
+  <string name="HideFolderInfo2">To display %1$s folder again, go to Settings&#160;&gt;&#160;Chat Folders&#160;&gt;&#160;%1$s</string>
+  <string name="HideArchiveFolderInfo">To display Archive folder again, go to Settings&#160;&gt;&#160;Chat Folders&#160;&gt;&#160;Archive as Folder</string>
   <string name="HideAllChats">Hide All Chats</string>
   <string name="EditFolder">Edit Folder</string>
   <string name="EditFolders">Edit Folders</string>
@@ -5112,9 +5136,11 @@
   <string name="FolderRemoveExclusionConfirmUser">Are you sure you want to remove "%1$s" from the always excluded list?</string>
   <string name="FolderRemoveExclusionConfirmType">Are you sure you want to remove "%1$s" from the always excluded list?</string>
   <string name="IncludeChats">Include Chats</string>
+  <string name="IncludeChatsHint">Include chats…</string>
   <string name="IncludeChatsInfo_one">You can select only one cloud and only one secret chat.</string>
   <string name="IncludeChatsInfo_other">You can select up to %1$s cloud chats and the same number of secret chats.</string>
   <string name="ExcludeChats">Exclude Chats</string>
+  <string name="ExcludeChatsHint">Exclude chats…</string>
   <string name="ExcludeChatsInfo_one">You can select only one cloud chat and only one secret chat</string>
   <string name="ExcludeChatsInfo_other">You can select up to %1$s cloud chats and the same number of secret chats.</string>
   <string name="FolderIncludedChats">Included Chats</string>
@@ -5134,8 +5160,8 @@
   <string name="MainListBadge">main list</string>
   <string name="IconOnly">Icon only</string>
   <string name="LabelOnly">Label only</string>
-  <string name="LabelAndIcon">Label with icon</string>
-  <string name="IconWithLabelOnActiveFolder">[WIP] Icon with label on active folder</string>
+  <string name="LabelAndIcon2">Icon with label</string>
+  <string name="IconWithLabelOnActiveFolder2">Icon with label on active folder</string>
   <string name="DisplayFoldersAtTheTop">Display folders at the top</string>
   <string name="ChatsXShowMore_one">Show %1$s more</string>
   <string name="ChatsXShowMore_other">Show %1$s more</string>
@@ -5145,8 +5171,6 @@
   <string name="ExperimentalSettingsUnavailable">No experiments available. Come back later.</string>
   <string name="Experiment_PeerIds">Show Peer IDs in Profiles</string>
   <string name="Experiment_PeerIdsInfo">Show API identifiers of users and chats in their profiles</string>
-  <string name="Experiment_ChatFolders">Enable Chat Folders</string>
-  <string name="Experiment_ChatFoldersInfo">Enable early access to folders. Appearance of this feature is planned to be changed in future versions of Telegram X, and it includes some unfinished work. Credit: [PR #297](https://github.com/TGX-Android/Telegram-X/pull/297) by nikita-toropov</string>
 
   <string name="PeerId">Peer ID</string>
   <string name="UserId">User ID</string>
@@ -5338,6 +5362,10 @@
   <string name="ChatFolderInviteLinkNameHint">Name</string>
   <string name="ChatFolderInviteLinksInfo">Share access to some of this folder’s groups and channels with others.</string>
   <string name="ChatFolderSaveChangesBeforeCreatingANewInviteLink">Changes must be saved before creating a new link</string>
+  <string name="ChatFoldersSetupSuggestionTitle">Folders are here!</string>
+  <string name="ChatFoldersSetupSuggestionText">The wait is over. **Chat Folders** are here for everyone to enjoy… and **customize**.\n\nPrefer icons? We’ve got you covered. Bottom tabs? No problem. Filter chats inside a folder? Swipe tab to access it as well.\n\nArchive as folder, hiding tabs, marking folder as read, sharing folders, and more features are now available.</string>
+  <string name="ChatFoldersSetupSuggestionAction">Start setting up</string>
+  <string name="HoldToEditChatFoldersHint">Hold to edit folders and their appearance</string>
 
   <string name="xChatsToJoin_one">%1$s chat to join</string>
   <string name="xChatsToJoin_other">%1$s chats to join</string>

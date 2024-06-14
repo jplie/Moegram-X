@@ -736,15 +736,6 @@ public class SettingsBugController extends RecyclerViewController<SettingsBugCon
         break;
       }
       case Section.EXPERIMENTS: {
-        if (!FeatureAvailability.Released.CHAT_FOLDERS) {
-          if (!items.isEmpty()) {
-            items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
-          }
-          items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_experiment, 0, R.string.Experiment_ChatFolders).setLongValue(Settings.EXPERIMENT_FLAG_ENABLE_FOLDERS));
-          items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
-          items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownStringSecure(this, R.string.Experiment_ChatFoldersInfo)));
-        }
-
         if (testerLevel >= Tdlib.TESTER_LEVEL_TESTER || Settings.instance().isExperimentEnabled(Settings.EXPERIMENT_FLAG_SHOW_PEER_IDS)) {
           if (!items.isEmpty()) {
             items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
@@ -788,6 +779,8 @@ public class SettingsBugController extends RecyclerViewController<SettingsBugCon
           }
 
           if (testerLevel >= Tdlib.TESTER_LEVEL_DEVELOPER) {
+            items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
+            items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_secret_attest, 0, "Test attest", false));
             if (tdlib.isAuthorized()) {
               items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
               items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_secret_sendAllChangeLogs, 0, "Send all change logs", false));
@@ -866,6 +859,8 @@ public class SettingsBugController extends RecyclerViewController<SettingsBugCon
             if (items.size() > initialSize)
               items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
             items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_secret_qrTest, 0, "Test QR scanner", false));
+            items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
+            items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_secret_testPrompts, 0, "Show prompts on next app launch", false));
           }
         }
 
@@ -1258,6 +1253,8 @@ public class SettingsBugController extends RecyclerViewController<SettingsBugCon
     } else if (viewId == R.id.btn_secret_disableNetwork) {
       Settings.instance().setDisableNetwork(adapter.toggleView(v));
       TdlibManager.instance().watchDog().letsHelpDoge();
+    } else if (viewId == R.id.btn_secret_testPrompts) {
+      Settings.instance().forceRevokeAllFeaturePrompts();
     } else if (viewId == R.id.btn_secret_forceTdlibRestarts) {
       TdlibManager.instance().setForceTdlibRestarts(adapter.toggleView(v));
     } else if (viewId == R.id.btn_secret_forceTcpInCalls) {
@@ -1391,6 +1388,12 @@ public class SettingsBugController extends RecyclerViewController<SettingsBugCon
       });
     } else if (viewId == R.id.btn_secret_resetLocalNotificationSettings) {
       tdlib.notifications().resetNotificationSettings(true);
+    } else if (viewId == R.id.btn_secret_attest) {
+      tdlib.requestPlayIntegrity(-1, StringUtils.random("0123456789abcdef", 32), (result, isError) -> {
+        runOnUiThread(() -> {
+          openAlert(R.string.AppName, result);
+        });
+      });
     } else if (viewId == R.id.btn_secret_databaseStats) {
       String stats = Settings.instance().pmc().getProperty("leveldb.stats") + "\n\n" + "Memory usage: " + Settings.instance().pmc().getProperty("leveldb.approximate-memory-usage");
       TextController c = new TextController(context, tdlib);
