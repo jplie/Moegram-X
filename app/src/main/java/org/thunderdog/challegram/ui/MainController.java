@@ -162,7 +162,7 @@ import me.vkryl.td.Td;
 import me.vkryl.td.TdConstants;
 import moe.kirao.mgx.MoexConfig;
 
-public class MainController extends ViewPagerController<Void> implements Menu, MoreDelegate, OverlayButtonWrap.Callback, TdlibOptionListener, AppUpdater.Listener, ChatFoldersListener, GlobalCountersListener, Settings.ChatFolderSettingsListener {
+public class MainController extends ViewPagerController<Void> implements Menu, MoreDelegate, OverlayButtonWrap.Callback, TdlibOptionListener, AppUpdater.Listener, ChatFoldersListener, GlobalCountersListener, Settings.ChatFolderSettingsListener, MoexConfig.SettingsChangeListener {
   private static final long MAIN_PAGER_ITEM_ID = Long.MIN_VALUE;
   private static final long ARCHIVE_PAGER_ITEM_ID = Long.MIN_VALUE + 1;
   private static final long INVALID_PAGER_ITEM_ID = Long.MAX_VALUE;
@@ -185,6 +185,13 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
   protected View onCreateView (Context context) {
     initPagerSections();
     return super.onCreateView(context);
+  }
+
+  @Override
+  public void onSettingsChanged (String key, Object newSettings, Object oldSettings) {
+    if (key.equals(MoexConfig.KEY_CHANGE_HEADER_TEXT) && toggleHeaderView != null) {
+      toggleHeaderView.setTitle(getCustomTitleName(), false);
+    }
   }
 
   @Override
@@ -254,6 +261,7 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
     tdlib.listeners().subscribeToChatFoldersUpdates(this);
     tdlib.context().global().addCountersListener(this);
     Settings.instance().addChatFolderSettingsListener(this);
+    MoexConfig.instance().addNewSettingsListener(this);
     if (Settings.instance().chatFoldersEnabled()) {
       if (this.chatFolderInfos != tdlib.chatFolders()) {
         updatePagerSections(true);
@@ -379,7 +387,7 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
           toggleHeaderView.setLayoutParams(FrameLayoutFix.newParams(ViewGroup.LayoutParams.MATCH_PARENT, Screen.dp(56f), Gravity.TOP, Screen.dp(56f), 0, Screen.dp(68f), 0));
           toggleHeaderView.setOnClickListener(v -> showGlobalFilter());
           toggleHeaderView.setOnLongClickListener(v -> applyGlobalFilter(FILTER_NONE));
-          toggleHeaderView.setTitle(Lang.getString(getGlobalFilterName(globalFilter)), /* animated */ false);
+          toggleHeaderView.setTitle(globalFilter == FILTER_NONE ? getCustomTitleName() : Lang.getString(getGlobalFilterName(globalFilter)), /* animated */ false);
           toggleHeaderView.setColorSet(new ToggleHeaderView2.ColorSet() {
             @Override
             public int titleColor () {
@@ -1100,6 +1108,7 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
     tdlib.context().global().removeCountersListener(this);
     Settings.instance().removeChatFolderSettingsListener(this);
     tdlib.listeners().unsubscribeFromChatFoldersUpdates(this);
+    MoexConfig.instance().removeNewSettingsListener(this);
     if (chatListUnreadCountListener != null) {
       tdlib.listeners().removeTotalChatCounterListener(chatListUnreadCountListener);
       chatListUnreadCountListener = null;
@@ -1586,6 +1595,27 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
 
   private @StringRes int getGlobalFilterName (@Filter int filter) {
     return filter == FILTER_NONE ? R.string.Chats : getFilterName(filter);
+  }
+
+  private String getCustomTitleName () {
+    String title;
+    switch (MoexConfig.instance().getHeaderText()) {
+      case 0:
+        title = Lang.getString(R.string.Chats);
+        break;
+      default:
+      case 1:
+        title = Lang.getString(R.string.moexHeaderClient);
+        break;
+      case 2:
+        String username = tdlib.account().getUsername();
+        title = !StringUtils.isEmptyOrBlank(username) ? username : tdlib.account().getFirstName();
+        break;
+      case 3:
+        title = tdlib.account().getFirstName();
+        break;
+    }
+    return title;
   }
 
   private @StringRes int getFilterName (@Filter int filter) {
@@ -3169,7 +3199,7 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
     cancelPendingFilter();
     setNeedArchive(false);
     if (toggleHeaderView != null) {
-      String title = Lang.getString(getGlobalFilterName(filterToApply));
+      String title = filterToApply == FILTER_NONE ? getCustomTitleName() : Lang.getString(getGlobalFilterName(filterToApply));
       toggleHeaderView.setTitle(title, /* animated */ isFocused());
     }
     int itemCount = getPagerItemCount();

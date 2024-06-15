@@ -313,11 +313,13 @@ public class MoexConfig {
   }
 
   public void setHeaderText (int mode) {
+    int oldState = getHeaderText();
     if (mode == HEADER_TEXT_MOEX) {
       remove(KEY_CHANGE_HEADER_TEXT);
     } else {
       putInt(KEY_CHANGE_HEADER_TEXT, mode);
     }
+    notifyNewSettingsListeners(KEY_CHANGE_HEADER_TEXT, mode, oldState);
   }
 
   public void toggleTypingInsteadChoosing () {
