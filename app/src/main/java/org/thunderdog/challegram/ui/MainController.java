@@ -261,7 +261,7 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
     tdlib.listeners().subscribeToChatFoldersUpdates(this);
     tdlib.context().global().addCountersListener(this);
     Settings.instance().addChatFolderSettingsListener(this);
-    MoexConfig.instance().addNewSettingsListener(this);
+    MoexConfig.instance().addSettingsListener(this);
     if (Settings.instance().chatFoldersEnabled()) {
       if (this.chatFolderInfos != tdlib.chatFolders()) {
         updatePagerSections(true);
@@ -1108,7 +1108,7 @@ public class MainController extends ViewPagerController<Void> implements Menu, M
     tdlib.context().global().removeCountersListener(this);
     Settings.instance().removeChatFolderSettingsListener(this);
     tdlib.listeners().unsubscribeFromChatFoldersUpdates(this);
-    MoexConfig.instance().removeNewSettingsListener(this);
+    MoexConfig.instance().removeSettingsListener(this);
     if (chatListUnreadCountListener != null) {
       tdlib.listeners().removeTotalChatCounterListener(chatListUnreadCountListener);
       chatListUnreadCountListener = null;

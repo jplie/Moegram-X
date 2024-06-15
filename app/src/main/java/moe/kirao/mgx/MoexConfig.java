@@ -189,40 +189,40 @@ public class MoexConfig {
     void onSettingsChanged (String key, Object newSettings, Object oldSettings);
   }
 
-  private ReferenceList<SettingsChangeListener> newSettingsListeners;
+  private ReferenceList<SettingsChangeListener> settingsListeners;
 
-  public void addNewSettingsListener (SettingsChangeListener listener) {
-    if (newSettingsListeners == null)
-      newSettingsListeners = new ReferenceList<>();
-    newSettingsListeners.add(listener);
+  public void addSettingsListener (SettingsChangeListener listener) {
+    if (settingsListeners == null)
+      settingsListeners = new ReferenceList<>();
+    settingsListeners.add(listener);
   }
 
-  public void removeNewSettingsListener (SettingsChangeListener listener) {
-    if (newSettingsListeners != null) {
-      newSettingsListeners.remove(listener);
+  public void removeSettingsListener (SettingsChangeListener listener) {
+    if (settingsListeners != null) {
+      settingsListeners.remove(listener);
     }
   }
 
-  private void notifyNewSettingsListeners (String key, Object newSettings, Object oldSettings) {
-    if (newSettingsListeners != null) {
-      for (SettingsChangeListener listener : newSettingsListeners) {
+  private void notifyClientListeners (String key, Object newSettings, Object oldSettings) {
+    if (settingsListeners != null) {
+      for (SettingsChangeListener listener : settingsListeners) {
         listener.onSettingsChanged(key, newSettings, oldSettings);
       }
     }
   }
 
   public void toggleDisableCameraButton () {
-    notifyNewSettingsListeners(KEY_DISABLE_CAMERA_BUTTON, !disableCameraButton, disableCameraButton);
+    notifyClientListeners(KEY_DISABLE_CAMERA_BUTTON, !disableCameraButton, disableCameraButton);
     putBoolean(KEY_DISABLE_CAMERA_BUTTON, disableCameraButton ^= true);
   }
 
   public void toggleDisableRecordButton () {
-    notifyNewSettingsListeners(KEY_DISABLE_RECORD_BUTTON, !disableRecordButton, disableRecordButton);
+    notifyClientListeners(KEY_DISABLE_RECORD_BUTTON, !disableRecordButton, disableRecordButton);
     putBoolean(KEY_DISABLE_RECORD_BUTTON, disableRecordButton ^= true);
   }
 
   public void toggleDisableCommandsButton () {
-    notifyNewSettingsListeners(KEY_DISABLE_COMMANDS_BUTTON, !disableCommandsButton, disableCommandsButton);
+    notifyClientListeners(KEY_DISABLE_COMMANDS_BUTTON, !disableCommandsButton, disableCommandsButton);
     putBoolean(KEY_DISABLE_COMMANDS_BUTTON, disableCommandsButton ^= true);
   }
 
@@ -236,6 +236,7 @@ public class MoexConfig {
 
   public void toggleHidePhoneNumber () {
     putBoolean(KEY_HIDE_PHONE_NUMBER, hidePhoneNumber ^= true);
+    notifyClientListeners(KEY_HIDE_PHONE_NUMBER, !hidePhoneNumber, hidePhoneNumber);
   }
 
   public void toggleShowIdProfile () {
@@ -243,7 +244,7 @@ public class MoexConfig {
   }
 
   public void toggleDisableSendAsButton () {
-    notifyNewSettingsListeners(KEY_DISABLE_SEND_AS_BUTTON, !disableSendAsButton, disableSendAsButton);
+    notifyClientListeners(KEY_DISABLE_SEND_AS_BUTTON, !disableSendAsButton, disableSendAsButton);
     putBoolean(KEY_DISABLE_SEND_AS_BUTTON, disableSendAsButton ^= true);
   }
 
@@ -252,7 +253,7 @@ public class MoexConfig {
   }
 
   public void toggleIncreaseRecents () {
-    notifyNewSettingsListeners(KEY_INCREASE_RECENTS_COUNT, !increaseRecents, increaseRecents);
+    notifyClientListeners(KEY_INCREASE_RECENTS_COUNT, !increaseRecents, increaseRecents);
     putBoolean(KEY_INCREASE_RECENTS_COUNT, increaseRecents ^= true);
   }
 
@@ -306,7 +307,7 @@ public class MoexConfig {
 
   public void toggleBlurDrawer () {
     putBoolean(KEY_BLUR_DRAWER, blurDrawer ^= true);
-    notifyNewSettingsListeners(KEY_BLUR_DRAWER, !blurDrawer, blurDrawer);
+    notifyClientListeners(KEY_BLUR_DRAWER, !blurDrawer, blurDrawer);
   }
 
   public int getHeaderText () {
@@ -320,7 +321,7 @@ public class MoexConfig {
     } else {
       putInt(KEY_CHANGE_HEADER_TEXT, mode);
     }
-    notifyNewSettingsListeners(KEY_CHANGE_HEADER_TEXT, mode, oldState);
+    notifyClientListeners(KEY_CHANGE_HEADER_TEXT, mode, oldState);
   }
 
   public void toggleTypingInsteadChoosing () {

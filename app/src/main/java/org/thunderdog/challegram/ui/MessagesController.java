@@ -1481,7 +1481,7 @@ public class MessagesController extends ViewController<MessagesController.Argume
 
     updateView();
 
-    MoexConfig.instance().addNewSettingsListener(this);
+    MoexConfig.instance().addSettingsListener(this);
     TGLegacyManager.instance().addEmojiListener(this);
 
     if (needTabs()) {
@@ -4418,7 +4418,7 @@ public class MessagesController extends ViewController<MessagesController.Argume
       }
       tdlib.settings().removeJoinRequestsDismissListener(this);
       TGLegacyManager.instance().removeEmojiListener(this);
-      MoexConfig.instance().removeNewSettingsListener(this);
+      MoexConfig.instance().removeSettingsListener(this);
       if (emojiLayout != null) {
         emojiLayout.destroy();
       }

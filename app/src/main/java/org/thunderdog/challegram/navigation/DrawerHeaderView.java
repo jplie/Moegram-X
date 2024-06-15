@@ -106,7 +106,7 @@ public class DrawerHeaderView extends View implements Destroyable, GlobalAccount
     setUser(account);
 
     TGLegacyManager.instance().addEmojiListener(this);
-    MoexConfig.instance().addNewSettingsListener(this);
+    MoexConfig.instance().addSettingsListener(this);
 
     ViewUtils.setBackground(this, new FillingDrawable(ColorId.headerBackground) {
       @Override
@@ -196,7 +196,7 @@ public class DrawerHeaderView extends View implements Destroyable, GlobalAccount
 
   @Override
   public void onSettingsChanged (String key, Object newSettings, Object oldSettings) {
-    if (key.equals(MoexConfig.KEY_BLUR_DRAWER)) {
+    if (key.equals(MoexConfig.KEY_BLUR_DRAWER) || key.equals(MoexConfig.KEY_HIDE_PHONE_NUMBER)) {
       setUser(currentAccount);
     }
   }
@@ -208,7 +208,7 @@ public class DrawerHeaderView extends View implements Destroyable, GlobalAccount
     TdlibManager.instance().global().removeAccountListener(this);
     TdlibManager.instance().global().removeCountersListener(this);
     TGLegacyManager.instance().removeEmojiListener(this);
-    MoexConfig.instance().removeNewSettingsListener(this);
+    MoexConfig.instance().removeSettingsListener(this);
     if (displayInfoFuture != null) {
       displayInfoFuture.performDestroy();
       displayInfoFuture = null;

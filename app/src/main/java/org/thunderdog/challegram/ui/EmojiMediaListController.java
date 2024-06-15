@@ -281,7 +281,7 @@ public class EmojiMediaListController extends ViewController<EmojiLayout> implem
     loadStickers(); // to show sections
     trendingSetsController.loadTrending(0, 20, 0); // to show blue badge?
 
-    MoexConfig.instance().addNewSettingsListener(this);
+    MoexConfig.instance().addSettingsListener(this);
 
     return contentView;
   }
@@ -644,7 +644,7 @@ public class EmojiMediaListController extends ViewController<EmojiLayout> implem
   public void destroy () {
     super.destroy();
     tdlib.listeners().unsubscribeFromGlobalUpdates(this);
-    MoexConfig.instance().removeNewSettingsListener(this);
+    MoexConfig.instance().removeSettingsListener(this);
     stickersController.destroy();
     trendingSetsController.destroy();
   }
