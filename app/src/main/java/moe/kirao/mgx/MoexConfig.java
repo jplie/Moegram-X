@@ -306,6 +306,7 @@ public class MoexConfig {
 
   public void toggleBlurDrawer () {
     putBoolean(KEY_BLUR_DRAWER, blurDrawer ^= true);
+    notifyNewSettingsListeners(KEY_BLUR_DRAWER, !blurDrawer, blurDrawer);
   }
 
   public int getHeaderText () {
