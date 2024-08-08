@@ -3794,6 +3794,10 @@ public class TD {
       return new DownloadedFile(sticker.sticker, mime.equals("image/webp") ? "sticker.webp" : mime.equals("video/webm") ? "sticker.webm" : "sticker.tgs", mime, new TdApi.FileTypeSticker());
     }
 
+    public static DownloadedFile valueOf (TdApi.VideoNote videoNote) {
+      return new DownloadedFile(videoNote.video, "video.mp4", null, new TdApi.FileTypeVideoNote());
+    }
+
     public int getFileId () {
       return file.id;
     }
@@ -4205,12 +4209,22 @@ public class TD {
       }
       case TdApi.MessageSticker.CONSTRUCTOR: {
         TdApi.Sticker sticker = ((TdApi.MessageSticker) msg.content).sticker;
-        String mime = U.resolveMimeType(sticker.sticker.local.path);
         if (sticker != null && TD.isFileLoaded(sticker.sticker)) {
+          String mime = U.resolveMimeType(sticker.sticker.local.path);
           return DownloadedFile.valueOf(sticker, mime);
         }
         return null;
       }
+      case TdApi.MessageVoiceNote.CONSTRUCTOR:
+        TdApi.VoiceNote voiceNote = ((TdApi.MessageVoiceNote) msg.content).voiceNote;
+        if (voiceNote != null && TD.isFileLoaded(voiceNote.voice)) {
+          return DownloadedFile.valueOf(voiceNote);
+        }
+      case TdApi.MessageVideoNote.CONSTRUCTOR:
+        TdApi.VideoNote videoNote = ((TdApi.MessageVideoNote) msg.content).videoNote;
+        if (videoNote != null && TD.isFileLoaded(videoNote.video)) {
+          return DownloadedFile.valueOf(videoNote);
+        }
     }
     return null;
   }

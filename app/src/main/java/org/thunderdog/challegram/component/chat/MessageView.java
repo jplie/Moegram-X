@@ -930,10 +930,10 @@ public class MessageView extends SparseDrawableView implements Destroyable, Draw
           icons.append(R.drawable.deproko_baseline_gif_24);
         }
         switch (baseDownloadedFile.getFileType().getConstructor()) {
-          case TdApi.FileTypeVoiceNote.CONSTRUCTOR:
+          /*case TdApi.FileTypeVoiceNote.CONSTRUCTOR:
           case TdApi.FileTypeVideoNote.CONSTRUCTOR: {
             break;
-          }
+          }*/
           case TdApi.FileTypeAnimation.CONSTRUCTOR:
           case TdApi.FileTypeVideo.CONSTRUCTOR:
           case TdApi.FileTypePhoto.CONSTRUCTOR: {
@@ -983,7 +983,7 @@ public class MessageView extends SparseDrawableView implements Destroyable, Draw
                 strings.append(Lang.plural(R.string.SaveXToDownloads, downloadedFiles.size()));
               }
               icons.append(R.drawable.baseline_file_download_24);
-              if (baseDownloadedFile.getMimeType().startsWith("image/") && baseDownloadedFile.getFileType().getConstructor() != TdApi.FileTypeSticker.CONSTRUCTOR) {
+              if (baseDownloadedFile.getMimeType() != null && baseDownloadedFile.getMimeType().startsWith("image/")) {
                 ids.append(R.id.btn_savePhoto);
                 if (allMessages.length == 1) {
                   strings.append(R.string.SaveToGallery);
