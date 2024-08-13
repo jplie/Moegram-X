@@ -41,4 +41,24 @@
   <item name="btn_disableReactions" type="id"/>
   <item name="btn_hideMessagePanelButtons" type="id" />
   <item name="btn_hideBottomBar" type="id" />
+  <item name="controller_details" type="id"/>
+  <item name="btn_msgDetails" type="id"/>
+  <item name="btn_chatIdDetails" type="id"/>
+  <item name="btn_dateDetails" type="id"/>
+  <item name="btn_senderDetails" type="id"/>
+  <item name="btn_authorDetails" type="id"/>
+  <item name="btn_openPath" type="id"/>
+  <item name="btn_audioPerformerDetails" type="id"/>
+  <item name="btn_audioSongNameDetails" type="id"/>
+  <item name="btn_openProfile" type="id"/>
+  <item name="btn_openGroupProfile" type="id"/>
+  <item name="btn_mime" type="id" />
+  <item name="btn_fileRes" type="id" />
+  <item name="btn_fileCaption" type="id" />
+  <item name="btn_filePath" type="id" />
+  <item name="btn_fileName" type="id" />
+  <item name="btn_fileDuration" type="id" />
+  <item name="btn_stickerEmojiDetails" type="id" />
+  <item name="btn_mediaBitrate" type="id" />
+  <item name="btn_storyId" type="id" />
 </resources>

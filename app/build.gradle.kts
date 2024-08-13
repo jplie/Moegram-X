@@ -442,6 +442,9 @@ dependencies {
   // TODO: upgrade to "com.googlecode.mp4parser:isoparser:1.1.22" or latest
   // mp4parser: https://github.com/sannies/mp4parser/releases
   implementation("com.googlecode.mp4parser:isoparser:1.0.6")
+  
+  // Gson: https://github.com/google/gson/blob/main/CHANGELOG.md
+  implementation("com.google.code.gson:gson:2.10.1")
 }
 
 if (!isExperimentalBuild) {

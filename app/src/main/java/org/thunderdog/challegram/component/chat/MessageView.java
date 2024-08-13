@@ -1066,14 +1066,12 @@ public class MessageView extends SparseDrawableView implements Destroyable, Draw
       }
     }
 
-    if (m.canWriteMessages() && !m.shouldDisallowScreenshots()) {
-      if (isMore) {
-        ids.append(R.id.btn_msgRepeat);
-        strings.append(R.string.Repeat);
-        icons.append(R.drawable.baseline_repeat_24);
-      } else {
-        moreOptions++;
-      }
+    if (isMore) {
+      ids.append(R.id.btn_msgDetails);
+      strings.append(R.string.MsgDetails);
+      icons.append(R.drawable.baseline_info_24);
+    } else {
+      moreOptions++;
     }
 
     if (msg.canBeReported() && !msg.isFakeMessage() && !msg.isSponsoredMessage()) {
@@ -1177,6 +1175,16 @@ public class MessageView extends SparseDrawableView implements Destroyable, Draw
           strings.append(Lang.getString(R.string.ViewMessagesFromUser, msg.getSender().getNameShort()));
         }
         icons.append(icon);
+      } else {
+        moreOptions++;
+      }
+    }
+
+    if (m.canWriteMessages() && !m.shouldDisallowScreenshots()) {
+      if (isMore) {
+        ids.append(R.id.btn_msgRepeat);
+        strings.append(R.string.Repeat);
+        icons.append(R.drawable.baseline_repeat_24);
       } else {
         moreOptions++;
       }

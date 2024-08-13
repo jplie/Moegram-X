@@ -16,7 +16,7 @@ public class OEMUtils {
   private static int oneUIVersion;
   private static Boolean isOneUI;
 
-  @SuppressWarnings("JavaReflectionMemberAccess")
+  @SuppressWarnings({"JavaReflectionMemberAccess", "DataFlowIssue"})
   public static boolean isOneUI() {
     if (isOneUI != null) {
       return isOneUI;

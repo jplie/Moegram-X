@@ -32,17 +32,14 @@ public class SystemUtils {
 
   public static void copyFileToClipboard (TdApi.File file, @StringRes int toast) {
     try {
-      Background.instance().post(() -> {
-        ClipboardManager clipboard = (ClipboardManager) UI.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        if (clipboard != null) {
-          Uri uri = FileProvider.getUriForFile(UI.getAppContext(), Config.FILE_PROVIDER_AUTHORITY, new File(file.local.path));
-          ClipData clip = ClipData.newUri(UI.getAppContext().getContentResolver(), "image", uri);
-          clipboard.setPrimaryClip(clip);
-          if (shouldShowClipboardToast()) {
-            UI.showToast(toast, Toast.LENGTH_SHORT);
-          }
+      ClipboardManager clipboard = (ClipboardManager) UI.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
+      if (clipboard != null) {
+        ClipData clip = ClipData.newUri(UI.getAppContext().getContentResolver(), "image", getUri(file.local.path));
+        clipboard.setPrimaryClip(clip);
+        if (shouldShowClipboardToast()) {
+          UI.showToast(toast, Toast.LENGTH_SHORT);
         }
-      });
+      }
     } catch (Exception e) {
       Log.e(e);
     }
@@ -74,5 +71,9 @@ public class SystemUtils {
     } catch (Exception e) {
       Log.e(e);
     }
+  }
+
+  public static Uri getUri(String path) {
+    return FileProvider.getUriForFile(UI.getAppContext(), Config.FILE_PROVIDER_AUTHORITY, new File(path));
   }
 }

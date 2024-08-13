@@ -10,7 +10,7 @@
   <string name="MoexChannelText">Channel</string>
   <string name="MoexSourceText">Source</string>
   <string name="MoexCategories">Categories</string>
-  <string name="MoexChannelLink" translatable="false">https://t.me/moegramx</string>
+  <string name="MoexChannelLink" translatable="false">https://t.me/moeGramX</string>
   <string name="MoexCrowdinLink" translatable="false">https://kiri.su/crowdin</string>
   <string name="MoexChatLink" translatable="false">https://t.me/moe_chat</string>
   <string name="MoexSourceLink" translatable="false">https://kiri.su/moexgit</string>
@@ -67,4 +67,20 @@
   <string name="ProfileOptions">Profile</string>
   <string name="ActivityOptions">Activity</string>
   <string name="HideBottomBar">Hide bottom bar</string>
+  <string name="MsgDetails">Details</string>
+  <string name="Date">Date</string>
+  <string name="SetId">Author</string>
+  <string name="FilePath">Path</string>
+  <string name="FileSize">Size</string>
+  <string name="SenderId">Sender</string>
+  <string name="MimeType">Mime</string>
+  <string name="FileRes">Resolution</string>
+  <string name="FileDuration">Duration</string>
+  <string name="FilePerformer">Performer</string>
+  <string name="FileSongName">Song Name</string>
+  <string name="Document">Document</string>
+  <string name="Chat">Chat</string>
+  <string name="Bitrate">Bitrate</string>
+  <string name="StoryId">Count</string>
+  <string name="Edited">Edited</string>
 </resources>
