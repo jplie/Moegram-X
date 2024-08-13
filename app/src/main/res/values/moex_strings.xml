@@ -83,4 +83,5 @@
   <string name="Bitrate">Bitrate</string>
   <string name="StoryId">Count</string>
   <string name="Edited">Edited</string>
+  <string name="MoexDarkenDrawer">Darken avatar</string>
 </resources>

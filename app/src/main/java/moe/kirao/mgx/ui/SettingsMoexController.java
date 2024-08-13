@@ -124,6 +124,9 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
     } else if (viewId == R.id.btn_typingInstead) {
       MoexConfig.instance().toggleTypingInsteadChoosing();
       adapter.updateValuedSettingById(R.id.btn_typingInstead);
+    } else if (viewId == R.id.btn_darkenDrawer) {
+      MoexConfig.instance().toggleDarkenDrawer();
+      adapter.updateValuedSettingById(R.id.btn_darkenDrawer);
     }
   }
 
@@ -310,6 +313,8 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
           view.getToggler().setRadioEnabled(MoexConfig.rememberOptions, isUpdate);
         } else if (itemId == R.id.btn_typingInstead) {
           view.getToggler().setRadioEnabled(MoexConfig.typingInsteadChoosing, isUpdate);
+        } else if (itemId == R.id.btn_darkenDrawer) {
+          view.getToggler().setRadioEnabled(MoexConfig.darkenDrawer, isUpdate);
         }
       }
     };
@@ -346,16 +351,14 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
         items.add(new ListItem(ListItem.TYPE_BUILD_NO, R.id.btn_build, 0, R.string.MoexVer, false));
         break;
       case CATEGORY_GENERAL:
+        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.GeneralMoexSettings));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_hideMessagesBadge, 0, R.string.hideMessagesBadge));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.ProfileOptions));
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_showIdProfile, 0, R.string.showIdProfile));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
-
-        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.DrawerOptions));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
-        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_hidePhone, 0, R.string.hidePhoneNumber));
-        items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
-        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_hideMessagesBadge, 0, R.string.hideMessagesBadge));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
 
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.ExperimentalOptions));
@@ -372,6 +375,10 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.DrawerOptions));
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_blurDrawer, 0, R.string.MoexBlurDrawer));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_darkenDrawer, 0, R.string.MoexDarkenDrawer));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_hidePhone, 0, R.string.hidePhoneNumber));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
 
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexChatsHeader));

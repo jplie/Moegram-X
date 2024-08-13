@@ -47,6 +47,7 @@ public class MoexConfig {
   public static final String KEY_TYPING_INSTEAD_CHOOSING = "typing_instead_choosing";
   public static final String KEY_DISABLE_REACTIONS = "disable_reactions";
   public static final String KEY_HIDE_BOTTOM_BAR = "hide_bottom_bar";
+  public static final String KEY_DARKEN_DRAWER = "darken_drawer";
 
 
   public static final int SIZE_LIMIT_800 = 0;
@@ -74,6 +75,7 @@ public class MoexConfig {
   public static boolean typingInsteadChoosing = instance().getBoolean(KEY_TYPING_INSTEAD_CHOOSING, true);
   public static boolean disableReactions = instance().getBoolean(KEY_DISABLE_REACTIONS, false);
   public static boolean hideBottomBar = instance().getBoolean(KEY_HIDE_BOTTOM_BAR, false);
+  public static boolean darkenDrawer = instance().getBoolean(KEY_DARKEN_DRAWER, false);
 
   private MoexConfig () {
     File configDir = new File(UI.getAppContext().getFilesDir(), "moexconf");
@@ -334,5 +336,9 @@ public class MoexConfig {
 
   public void toggleHideBottomBar () {
     putBoolean(KEY_HIDE_BOTTOM_BAR, hideBottomBar ^= true);
+  }
+
+  public void toggleDarkenDrawer () {
+    putBoolean(KEY_DARKEN_DRAWER, darkenDrawer ^= true);
   }
 }
