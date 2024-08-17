@@ -8,7 +8,7 @@ import org.thunderdog.challegram.config.Device;
 import java.lang.reflect.Field;
 
 public class OEMUtils {
-  public static boolean isMIUI() {
+  public static boolean isMIUI () {
     return Device.IS_XIAOMI;
   }
 
@@ -17,7 +17,7 @@ public class OEMUtils {
   private static Boolean isOneUI;
 
   @SuppressWarnings({"JavaReflectionMemberAccess", "DataFlowIssue"})
-  public static boolean isOneUI() {
+  public static boolean isOneUI () {
     if (isOneUI != null) {
       return isOneUI;
     }
@@ -37,11 +37,11 @@ public class OEMUtils {
     return isOneUI;
   }
 
-  public static boolean hasBuiltInClipboardToasts() {
+  public static boolean hasBuiltInClipboardToasts () {
     return isOneUI() && getOneUIVersion() == ONEUI_40;
   }
 
-  public static int getOneUIVersion() {
+  public static int getOneUIVersion () {
     if (!isOneUI()) {
       return 0;
     }

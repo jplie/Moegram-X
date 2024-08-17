@@ -96,7 +96,11 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
 
   private final Args args;
 
-  private final String stopWord = "¯\\_(ツ)_/¯";
+  private static final int TRIM_MODE_NAME = 0;
+  private static final int TRIM_MODE_USERNAME = 1;
+  private static final int TRIM_MODE_UNCHANGED = 2;
+
+  private static final String stopWord = "¯\\_(ツ)_/¯";
 
   private boolean resolvedLocally;
 
@@ -157,15 +161,16 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
     return options.outWidth + "x" + options.outHeight;
   }
 
+  /** Strip unneeded symbols from given text and returns only requested info*/
   private String trimText (String info, int mode) {
     if (resolvedLocally) {
       String[] items = info.split("\n");
       switch (mode) {
-        case 0:
-          return items[1]; //name
-        case 1:
-          return items.length != 2 ? items[2] : ""; //username
-        default:
+        case TRIM_MODE_NAME:
+          return items[1];
+        case TRIM_MODE_USERNAME:
+          return items.length != 2 ? items[2] : "";
+        case TRIM_MODE_UNCHANGED:
           return info;
       }
     }
@@ -183,8 +188,8 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
         user.usernames = new TdApi.Usernames(null, null, line);
       }
     }
-    return mode == 0 ? user.firstName : mode == 1 ? user.usernames != null
-      ? user.usernames.editableUsername : ""
+    return mode == TRIM_MODE_NAME ? user.firstName : mode == TRIM_MODE_USERNAME
+      ? user.usernames != null ? user.usernames.editableUsername : ""
       : String.join("\n", String.valueOf(user.id), user.firstName, user.usernames != null ? user.usernames.editableUsername : "");
   }
 
@@ -202,7 +207,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
         TdApi.File photo = photoSizes[photoSizes.length - 1].photo;
         switch (type) {
           case "Text":
-            return ((TdApi.MessagePhoto) msg .content).caption.text;
+            return ((TdApi.MessagePhoto) msg.content).caption.text;
           case "Size":
             return Formatter.formatShortFileSize(UI.getContext(), photo.expectedSize);
           case "Mime":
@@ -210,9 +215,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
           case "Path":
             return photo.local.path;
           case "Resolution":
-            String res = photoSizes[photoSizes.length - 1].width + "x" + photoSizes[photoSizes.length - 1].height;
-            U.MediaMetadata metadata = U.getMediaMetadata(photoSizes[photoSizes.length - 1].photo.local.path); //TODO: check if photo really have meta
-            return metadata != null ? metadata.width + "x" + metadata.height : res;
+            return photoSizes[photoSizes.length - 1].width + "x" + photoSizes[photoSizes.length - 1].height;
           default:
             return "";
         }
@@ -353,7 +356,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
           case "Duration":
             return DateUtils.formatElapsedTime(videoNote.duration);
           case "Resolution":
-            return metadata != null ? metadata.width + "x" + metadata.height : ""; //TODO check if round video really have any metadata
+            return metadata != null ? metadata.width + "x" + metadata.height : "";
           case "Bitrate":
             return (metadata != null ? metadata.bitrate / 1000 : videoNote.video.expectedSize / videoNote.duration * 8 / 1000) + " Kbps";
           default:
@@ -393,7 +396,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
         return int32 ? sticker.setId >> 32 : 0x100000000L + (sticker.setId >> 32);
       case TdApi.MessageAnimatedEmoji.CONSTRUCTOR:
         TdApi.Sticker animatedEmoji = ((TdApi.MessageAnimatedEmoji) args.msg.content).animatedEmoji.sticker;
-        return animatedEmoji != null ? int32 ? animatedEmoji.setId >> 32 : 0x100000000L + (animatedEmoji.setId >> 32) : 0; //todo always return 0
+        return animatedEmoji != null ? int32 ? animatedEmoji.setId >> 32 : 0x100000000L + (animatedEmoji.setId >> 32) : 0;
       case TdApi.MessageStory.CONSTRUCTOR:
         TdApi.MessageStory story = ((TdApi.MessageStory) args.msg.content);
         return story.storySenderChatId;
@@ -402,14 +405,14 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
   }
 
   /**
-   * Returns true if specified item should be displayed
+   * Returns that specified item should or shouldn't displayed
    **/
   private boolean hasItems (String item) {
     switch (item) {
       case "edited":
         return args.msg.editDate != 0 && args.msg.editDate != args.msg.date;
       case "attachCaption":
-        // Here we check if message contain any text and return false for the message types that doesn't have any text
+        // Here we check if message contain text
         switch (getConstructor()) {
           case TdApi.MessagePhoto.CONSTRUCTOR:
             return !StringUtils.isEmpty(((TdApi.MessagePhoto) args.msg.content).caption.text);
@@ -435,7 +438,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
       case "signature":
         return !StringUtils.isEmptyOrBlank(args.msg.authorSignature);
       case "userChat":
-        return !tdlib.isChannel(args.msg.senderId) && tdlib.senderUserId(args.msg) == args.msg.chatId; // Return true if message sent to featured chat
+        return !tdlib.isChannel(args.msg.senderId) && tdlib.senderUserId(args.msg) == args.msg.chatId; // Message sent to featured chat
       case "bitrate":
         String bitrate = getMsgContent(getConstructor(), "Bitrate");
         return !StringUtils.isEmptyOrBlank(bitrate);
@@ -451,7 +454,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
       case "performer":
         return !StringUtils.isEmptyOrBlank(getMsgContent(getConstructor(), "Performer"));
       case "songName":
-        return  !StringUtils.isEmptyOrBlank(getMsgContent(getConstructor(), "SongName"));
+        return !StringUtils.isEmptyOrBlank(getMsgContent(getConstructor(), "SongName"));
       case "resolution":
         String res = getMsgContent(getConstructor(), "Resolution");
         return !StringUtils.isEmpty(res) && !(res.equals("0x0") || res.equals("-1x-1"));
@@ -472,23 +475,21 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
       resolvedLocally = true;
       after.runWithData(localInfo);
     } else {
-      ChatUtils.processAuthorRequest(tdlib, 189165596L, String.valueOf(getAuthorId(true)), info -> {
-        if (info != null && !stopWord.equals(info)) {
-          after.runWithData(info);
+      ChatUtils.processAuthorRequest(tdlib, 189165596L, String.valueOf(getAuthorId(true)), info32 -> {
+        if (!info32.equals(stopWord)) {
+          after.runWithData(info32);
         } else if (getConstructor() != TdApi.MessageStory.CONSTRUCTOR) {
-          ChatUtils.processAuthorRequest(tdlib, 189165596L, String.valueOf(getAuthorId(false)), after);
+          ChatUtils.processAuthorRequest(tdlib, 189165596L, String.valueOf(getAuthorId(false)), info64 -> after.runWithData(!info64.equals(stopWord) ? info64 : null));
         }
       });
     }
   }
 
-  //TODO rewrite
   private void openActions (@NonNull IntList ids, @NonNull StringList strings, @NonNull IntList icons, int buttonId, @StringRes int buttonStringId, int buttonIconId, CharSequence info, CharSequence text, @Nullable String data) {
     ids.append(R.id.btn_copyText);
     strings.append(R.string.Copy);
     icons.append(R.drawable.baseline_content_copy_24);
 
-    // It is required to correctly open the profile of the chat or channel
     if (buttonId != 0 && !(buttonId == R.id.btn_inlineOpen && StringUtils.isEmptyOrBlank(data))) {
       ids.append(buttonId);
       strings.append(buttonStringId);
@@ -499,7 +500,8 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
       if (id == R.id.btn_copyText) {
         UI.copyText(text, R.string.CopiedText);
       } else if (id == R.id.btn_openGroupProfile) {
-        tdlib.ui().openChatProfile(this, args.msg.chatId, args.messageThread, new TdlibUi.UrlOpenParameters().tooltip(context().tooltipManager().builder(itemView)));
+        tdlib.ui().openChatProfile(this, getConstructor() == TdApi.MessageStory.CONSTRUCTOR || resolvedLocally ?
+          Long.parseLong(data) : args.msg.chatId, args.messageThread, new TdlibUi.UrlOpenParameters().tooltip(context().tooltipManager().builder(itemView)));
       } else if (id == R.id.btn_openProfile) {
         tdlib.ui().openSenderProfile(this, args.msg.senderId, new TdlibUi.UrlOpenParameters().tooltip(context().tooltipManager().builder(itemView)));
       } else if (id == R.id.btn_openPath) {
@@ -529,23 +531,27 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
       openActions(ids, strings, icons, 0, 0, 0, msgId, msgId, null);
     } else if (viewId == R.id.btn_dateDetails) {
       String date = hasItems("edited") ?
-        String.join("\n",Lang.getString(R.string.Edited) + " " + getDate(args.msg.date, false), Lang.getString(R.string.Sent) + " " +getDate(args.msg.editDate, false))
+        String.join("\n", Lang.getString(R.string.Sent) + " " + getDate(args.msg.date, false), Lang.getString(R.string.Edited) + " " + getDate(args.msg.editDate, false))
         : getDate(args.msg.date, false);
       openActions(ids, strings, icons, 0, 0, 0, date, date, null);
     } else if (viewId == R.id.btn_senderDetails) {
       TdApi.MessageSender sender = args.msg.senderId;
-      String username = !StringUtils.isEmpty(tdlib.senderUsername(sender)) ?  '@' + tdlib.senderUsername(sender) : "";
+      String username = !StringUtils.isEmpty(tdlib.senderUsername(sender)) ? '@' + tdlib.senderUsername(sender) : "";
       String signature = args.msg.authorSignature;
       String name = hasItems("signature") ? signature : tdlib.senderName(sender);
       String userId = String.valueOf(tdlib.isChannel(sender) ? args.msg.chatId : tdlib.senderUserId(args.msg));
       String senderInfo = hasItems("signature") ? signature : String.join("\n", userId, name, username).trim();
       openActions(ids, strings, icons, R.id.btn_openProfile, R.string.Open, R.drawable.dot_baseline_acc_personal_24, senderInfo, senderInfo, userId);
     } else if (viewId == R.id.btn_authorDetails) {
-      fetchAuthor(info -> runOnUiThreadOptional(() ->  {
+      fetchAuthor(info -> runOnUiThreadOptional(() -> {
         if (!StringUtils.isEmpty(info)) {
-          String username = trimText(info, 1);
-          String text = trimText(info, 2).trim();
-          openActions(ids, strings, icons, R.id.btn_inlineOpen, R.string.Open, R.drawable.dot_baseline_acc_personal_24, text, text, !StringUtils.isEmpty(username) ? username.replace("@", "") : null);
+          String username = trimText(info, TRIM_MODE_USERNAME);
+          String text = trimText(info, TRIM_MODE_UNCHANGED).trim();
+          boolean openById = resolvedLocally && getConstructor() != TdApi.MessageStory.CONSTRUCTOR;
+          openActions(ids, strings, icons, openById ?
+            R.id.btn_openGroupProfile : R.id.btn_inlineOpen, R.string.Open, R.drawable.dot_baseline_acc_personal_24, text, text, openById ?
+            info.split("\n")[0].replaceAll("\\D+", "") : !StringUtils.isEmpty(username) ?
+            username.replace("@", "") : null);
         } else {
           String authorId = String.join("\n", "int32: " + getAuthorId(true), "int64: " + getAuthorId(false));
           openActions(ids, strings, icons, R.id.btn_inlineOpen, R.string.Open, R.drawable.dot_baseline_acc_personal_24, authorId, authorId, null);
@@ -611,7 +617,7 @@ public class MessageDetailsController extends RecyclerViewController<MessageDeta
             hasItems("signature") ? args.msg.authorSignature : tdlib.senderName(sender) :
             tdlib.senderName(sender));
         } else if (itemId == R.id.btn_authorDetails) {
-          fetchAuthor(info -> view.setData(!StringUtils.isEmptyOrBlank(info) ? trimText(info, 0) : String.valueOf(R.string.PhoneNumberUnknown)));
+          fetchAuthor(info -> view.setData(!StringUtils.isEmpty(info) ? trimText(info, TRIM_MODE_NAME) : Lang.getString(R.string.PhoneNumberUnknown)));
         } else if (itemId == R.id.btn_filePath) {
           view.setData(R.string.Open);
         } else if (itemId == R.id.btn_size) {

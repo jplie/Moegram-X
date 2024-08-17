@@ -75,7 +75,6 @@
   <string name="SenderId">Sender</string>
   <string name="MimeType">Mime</string>
   <string name="FileRes">Resolution</string>
-  <string name="FileDuration">Duration</string>
   <string name="FilePerformer">Performer</string>
   <string name="FileSongName">Song Name</string>
   <string name="Document">Document</string>

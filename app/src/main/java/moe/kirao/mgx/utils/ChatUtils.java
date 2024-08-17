@@ -12,7 +12,7 @@ import me.vkryl.td.Td;
 
 public class ChatUtils {
   @Nullable
-  public static String resolveUserLocal(@NonNull Tdlib tdlib, long userId) {
+  public static String resolveUserLocal (@NonNull Tdlib tdlib, long userId) {
     TdApi.MessageSender sender = tdlib.sender(userId);
     if (tdlib.senderName(sender).startsWith("User#")) return null;
     if (!StringUtils.isEmptyOrBlank(tdlib.senderUsername(sender))) {

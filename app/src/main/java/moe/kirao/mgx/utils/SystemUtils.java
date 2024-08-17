@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.List;
 
 public class SystemUtils {
-  public static boolean shouldShowClipboardToast() {
+  public static boolean shouldShowClipboardToast () {
     return ((Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) || OEMUtils.isMIUI()) && ((Build.VERSION.SDK_INT < Build.VERSION_CODES.S) || !OEMUtils.hasBuiltInClipboardToasts());
   }
 
@@ -73,7 +73,7 @@ public class SystemUtils {
     }
   }
 
-  public static Uri getUri(String path) {
+  public static Uri getUri (String path) {
     return FileProvider.getUriForFile(UI.getAppContext(), Config.FILE_PROVIDER_AUTHORITY, new File(path));
   }
 }

@@ -49,7 +49,6 @@ public class MoexConfig {
   public static final String KEY_HIDE_BOTTOM_BAR = "hide_bottom_bar";
   public static final String KEY_DARKEN_DRAWER = "darken_drawer";
 
-
   public static final int SIZE_LIMIT_800 = 0;
   public static final int SIZE_LIMIT_1280 = 1;
   public static final int SIZE_LIMIT_2560 = 2;

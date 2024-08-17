@@ -30,10 +30,11 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
     return R.id.controller_moexSettings;
   }
 
-  public static final int CATEGORY_MAIN = 0;
   public static final int CATEGORY_GENERAL = 1;
   public static final int CATEGORY_INTERFACE = 2;
   public static final int CATEGORY_CHATS = 3;
+
+  private int category;
 
   public static class Args {
     private final int category;
@@ -43,8 +44,6 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
     }
   }
 
-  private int category = CATEGORY_MAIN;
-
   @Override
   public void setArguments (Args args) {
     super.setArguments(args);
@@ -52,7 +51,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
   }
 
   @Override public CharSequence getName () {
-    return category == CATEGORY_MAIN ? Lang.getString(R.string.MoexSettings) : category == CATEGORY_CHATS ? Lang.getString(R.string.Chats) : category == CATEGORY_INTERFACE ? Lang.getString(R.string.InterfaceMoexSettings) : Lang.getString(R.string.GeneralMoexSettings);
+    return category == CATEGORY_GENERAL ? Lang.getString(R.string.GeneralMoexSettings) : category == CATEGORY_CHATS ? Lang.getString(R.string.Chats) : category == CATEGORY_INTERFACE ? Lang.getString(R.string.InterfaceMoexSettings) : Lang.getString(R.string.MoexSettings) ;
   }
 
   private SettingsAdapter adapter;
@@ -60,6 +59,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
   @Override public void onClick (View v) {
     int viewId = v.getId();
     SettingsMoexController c = new SettingsMoexController(context, tdlib);
+
     if (viewId == R.id.btn_GeneralMoexSettings) {
       c.setArguments(new SettingsMoexController.Args(SettingsMoexController.CATEGORY_GENERAL));
       navigateTo(c);
@@ -81,52 +81,52 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       UI.showToast(R.string.cuteToast, Toast.LENGTH_SHORT);
     } else if (viewId == R.id.btn_hidePhone) {
       MoexConfig.instance().toggleHidePhoneNumber();
-      adapter.updateValuedSettingById(R.id.btn_hidePhone);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_enableFeaturesButton) {
       MoexConfig.instance().toggleEnableFeaturesButton();
-      adapter.updateValuedSettingById(R.id.btn_enableFeaturesButton);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_showIdProfile) {
       MoexConfig.instance().toggleShowIdProfile();
-      adapter.updateValuedSettingById(R.id.btn_showIdProfile);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_hideMessagesBadge) {
       MoexConfig.instance().toggleHideMessagesBadge();
-      adapter.updateValuedSettingById(R.id.btn_hideMessagesBadge);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_changeSizeLimit) {
       showChangeSizeLimit();
     } else if (viewId == R.id.btn_squareAvatar) {
       MoexConfig.instance().toggleSquareAvatar();
-      adapter.updateValuedSettingById(R.id.btn_squareAvatar);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_blurDrawer) {
       MoexConfig.instance().toggleBlurDrawer();
-      adapter.updateValuedSettingById(R.id.btn_blurDrawer);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_headerText) {
       showHeaderTextOptions();
     } else if (viewId == R.id.btn_disableReactions) {
       MoexConfig.instance().toggleDisableReactions();
-      adapter.updateValuedSettingById(R.id.btn_disableReactions);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_hideMessagePanelButtons) {
       showHideMessagePanelOptions();
     } else if (viewId == R.id.btn_hideBottomBar) {
       MoexConfig.instance().toggleHideBottomBar();
-      adapter.updateValuedSettingById(R.id.btn_hideBottomBar);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_disableStickerTimestamp) {
       MoexConfig.instance().toggleDisableStickerTimestamp();
-      adapter.updateValuedSettingById(R.id.btn_disableStickerTimestamp);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_roundedStickers) {
       MoexConfig.instance().toggleRoundedStickers();
-      adapter.updateValuedSettingById(R.id.btn_roundedStickers);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_IncreaseRecents) {
       MoexConfig.instance().toggleIncreaseRecents();
-      adapter.updateValuedSettingById(R.id.btn_IncreaseRecents);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_rememberOptions) {
       MoexConfig.instance().toggleRememberSendOptions();
-      adapter.updateValuedSettingById(R.id.btn_rememberOptions);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_typingInstead) {
       MoexConfig.instance().toggleTypingInsteadChoosing();
-      adapter.updateValuedSettingById(R.id.btn_typingInstead);
+      adapter.updateValuedSettingById(viewId);
     } else if (viewId == R.id.btn_darkenDrawer) {
       MoexConfig.instance().toggleDarkenDrawer();
-      adapter.updateValuedSettingById(R.id.btn_darkenDrawer);
+      adapter.updateValuedSettingById(viewId);
     }
   }
 
@@ -145,8 +145,8 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_sizeLimit1280, 0, R.string.px1280, R.id.btn_changeSizeLimit, sizeLimitOption == MoexConfig.SIZE_LIMIT_1280),
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_sizeLimit2560, 0, R.string.px2560, R.id.btn_changeSizeLimit, sizeLimitOption == MoexConfig.SIZE_LIMIT_2560),
     }).addHeaderItem(Lang.getMarkdownString(this, R.string.SizeLimitDesc)).setIntDelegate((id, result) -> {
-      int sizeOption;
       int sizeLimit = result.get(R.id.btn_changeSizeLimit);
+      int sizeOption;
       if (sizeLimit == R.id.btn_sizeLimit800) {
         sizeOption = MoexConfig.SIZE_LIMIT_800;
       } else if (sizeLimit == R.id.btn_sizeLimit1280) {
@@ -154,6 +154,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       } else {
         sizeOption = MoexConfig.SIZE_LIMIT_2560;
       }
+
       MoexConfig.instance().setSizeLimit(sizeOption);
       adapter.updateValuedSettingById(R.id.btn_changeSizeLimit);
     }));
@@ -180,6 +181,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       if (MoexConfig.disableSendAsButton == (result.get(R.id.btn_disableSendAsButton) == 0)) {
         MoexConfig.instance().toggleDisableSendAsButton();
       }
+
       adapter.updateValuedSettingById(R.id.btn_hideMessagePanelButtons);
     }));
   }
@@ -192,8 +194,8 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_headerTextUsername, 0, R.string.Username, R.id.btn_headerText, headerTextOption == MoexConfig.HEADER_TEXT_USERNAME),
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_headerTextName, 0, R.string.login_FirstName, R.id.btn_headerText, headerTextOption == MoexConfig.HEADER_TEXT_NAME),
     }).setIntDelegate((id, result) -> {
-      int defaultOption;
       int headerText = result.get(R.id.btn_headerText);
+      int defaultOption;
       if (headerText == R.id.btn_headerTextChats) {
         defaultOption = MoexConfig.HEADER_TEXT_CHATS;
       } else if (headerText == R.id.btn_headerTextName) {
@@ -203,6 +205,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       } else {
         defaultOption = MoexConfig.HEADER_TEXT_MOEX;
       }
+
       MoexConfig.instance().setHeaderText(defaultOption);
       adapter.updateValuedSettingById(R.id.btn_headerText);
     }));
@@ -215,6 +218,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       protected void setValuedSetting (ListItem item, SettingView view, boolean isUpdate) {
         view.setDrawModifier(item.getDrawModifier());
         int itemId = item.getId();
+
         if (itemId == R.id.btn_moexCrowdinLink) {
           view.setData(R.string.MoexCrowdinText);
         } else if (itemId == R.id.btn_moexChatLink) {
@@ -276,31 +280,24 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
           view.getToggler().setRadioEnabled(MoexConfig.disableReactions, isUpdate);
         } else if (itemId == R.id.btn_hideMessagePanelButtons) {
           StringBuilder b = new StringBuilder();
+          String separator = Lang.getConcatSeparator();
+
           if (MoexConfig.disableCameraButton) {
             b.append(Lang.getString(R.string.DisableCameraButton));
+            if (b.length() > 0) b.append(separator);
           }
           if (MoexConfig.disableRecordButton) {
-            if (b.length() > 0) {
-              b.append(Lang.getConcatSeparator());
-            }
             b.append(Lang.getString(R.string.DisableRecordButton));
+            if (b.length() > 0) b.append(separator);
           }
           if (MoexConfig.disableCommandsButton) {
-            if (b.length() > 0) {
-              b.append(Lang.getConcatSeparator());
-            }
             b.append(Lang.getString(R.string.DisableCommandsButton));
+            if (b.length() > 0) b.append(separator);
           }
-          if (MoexConfig.disableSendAsButton) {
-            if (b.length() > 0) {
-              b.append(Lang.getConcatSeparator());
-            }
+          if (MoexConfig.disableSendAsButton)
             b.append(Lang.getString(R.string.DisableSendAsButton));
-          }
-          if (b.length() == 0) {
-            b.append(Lang.getString(R.string.BlockedNone));
-          }
-          view.setData(b.toString());
+
+          view.setData(b.length() == 0 ? Lang.getString(R.string.BioNone) : b.toString());
         } else if (itemId == R.id.btn_hideBottomBar) {
           view.getToggler().setRadioEnabled(MoexConfig.hideBottomBar, isUpdate);
         } else if (itemId == R.id.btn_disableStickerTimestamp) {
@@ -321,35 +318,8 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
 
     ArrayList<ListItem> items = new ArrayList<>();
     items.add(new ListItem(ListItem.TYPE_EMPTY_OFFSET_SMALL));
+
     switch (category) {
-      default:
-        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexAbout));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
-        items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownString(this, R.string.MoexAboutText), false));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
-
-        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexCategories));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_GeneralMoexSettings, R.drawable.baseline_settings_24, R.string.GeneralMoexSettings));
-        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_InterfaceMoexSettings, R.drawable.baseline_extension_24, R.string.InterfaceMoexSettings));
-        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_ChatsMoexSettings, R.drawable.baseline_chat_bubble_24, R.string.ChatsMoexSettings));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
-
-        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexLinks));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexCrowdinLink, R.drawable.baseline_translate_24, R.string.Translate));
-        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexChatLink, R.drawable.outline_forum_24, R.string.MoexChatText));
-        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexChannelLink, R.drawable.baseline_link_24, R.string.MoexChannelText));
-        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
-        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexSourceLink, R.drawable.baseline_code_24, R.string.MoexSourceText));
-        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
-
-        items.add(new ListItem(ListItem.TYPE_BUILD_NO, R.id.btn_build, 0, R.string.MoexVer, false));
-        break;
       case CATEGORY_GENERAL:
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.GeneralMoexSettings));
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
@@ -377,8 +347,8 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_blurDrawer, 0, R.string.MoexBlurDrawer));
         items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_darkenDrawer, 0, R.string.MoexDarkenDrawer));
-        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_hidePhone, 0, R.string.hidePhoneNumber));
         items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_hidePhone, 0, R.string.hidePhoneNumber));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
 
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexChatsHeader));
@@ -415,6 +385,34 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_typingInstead, 0, R.string.TypingInstead));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
         items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownString(this, R.string.TypingInsteadInfo), false));
+        break;
+      default:
+        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexAbout));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
+        items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownString(this, R.string.MoexAboutText), false));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+
+        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexCategories));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_GeneralMoexSettings, R.drawable.baseline_settings_24, R.string.GeneralMoexSettings));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_InterfaceMoexSettings, R.drawable.baseline_extension_24, R.string.InterfaceMoexSettings));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_ChatsMoexSettings, R.drawable.baseline_chat_bubble_24, R.string.ChatsMoexSettings));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+
+        items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexLinks));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexCrowdinLink, R.drawable.baseline_translate_24, R.string.Translate));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexChatLink, R.drawable.outline_forum_24, R.string.MoexChatText));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexChannelLink, R.drawable.baseline_link_24, R.string.MoexChannelText));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR));
+        items.add(new ListItem(ListItem.TYPE_SETTING, R.id.btn_moexSourceLink, R.drawable.baseline_code_24, R.string.MoexSourceText));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+
+        items.add(new ListItem(ListItem.TYPE_BUILD_NO, R.id.btn_build, 0, R.string.MoexVer, false));
         break;
     }
     adapter.setItems(items, false);
