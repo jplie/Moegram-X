@@ -6,6 +6,7 @@
   <string name="ChatsMoexSettings">聊天</string>
   <string name="MoexLinks">链接</string>
   <string name="MoexChatText">聊天</string>
+  <string name="MoexChannelText">最新动态</string>
   <string name="MoexSourceText">源代码</string>
   <string name="MoexCategories">类别</string>
   <string name="MoexHideButtons">消息界面</string>
@@ -18,6 +19,8 @@
   <string name="RoundedStickers">圆形贴纸</string>
   <string name="DrawerOptions">界面选项</string>
   <string name="hidePhoneNumber">隐藏我的电话号码</string>
+  <string name="EnableFeatures">启用测试特性开关</string>
+  <string name="FeaturesButtonInfo">在侧栏中显示实验性选项按钮，例如切换到测试用DC服务器或其他功能切换开关。</string>
   <string name="ExperimentalOptions">实验性选项</string>
   <string name="PhoneHidden">号码已隐藏</string>
   <string name="showIdProfile">在个人资料页显示 ID</string>
@@ -42,6 +45,7 @@
   <string name="MoexBlurDrawer">模糊头像</string>
   <string name="MoexChatsHeader">聊天列表</string>
   <string name="TypingInstead">选择贴纸时的输入状态</string>
+  <string name="TypingInsteadInfo" formatted="true">这将会发送状态为 **输入中** 而不是 **选择贴纸中**</string>
   <string name="DisableReactions">隐藏回应</string>
   <string name="HideMessagePanelButtons">隐藏信息面板按钮</string>
   <string name="ProfileOptions">个人资料</string>

@@ -51,4 +51,20 @@
   <string name="ProfileOptions">Perfil</string>
   <string name="ActivityOptions">Atividade</string>
   <string name="HideBottomBar">Ocultar barra inferior</string>
+  <string name="MsgDetails">Detalhes</string>
+  <string name="Date">Data</string>
+  <string name="SetId">Autor</string>
+  <string name="FilePath">Caminho</string>
+  <string name="FileSize">Tamanho</string>
+  <string name="SenderId">Remetente</string>
+  <string name="MimeType">Mime</string>
+  <string name="FileRes">Resolução</string>
+  <string name="FilePerformer">Performance</string>
+  <string name="FileSongName">Nome da música</string>
+  <string name="Document">Documento</string>
+  <string name="Chat">Chat</string>
+  <string name="Bitrate">Taxa de Bits</string>
+  <string name="StoryId">Quantidade</string>
+  <string name="Edited">Editado</string>
+  <string name="MoexDarkenDrawer">Avatar escurecido</string>
 </resources>

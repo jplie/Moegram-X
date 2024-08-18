@@ -28,4 +28,29 @@
   <string name="MobileHidden">Номер приховано</string>
   <string name="MoexAbout">Про додаток</string>
   <string name="MoexAboutText" formatted="true">**moeGramX** - це симпатичний, багатий на експериментальні функції клієнт, що базується на офіційних джерелах і TDlib. Не соромтеся пропонувати функції, повідомляти про проблеми або просто спілкуватися в нашій групі!</string>
+  <string name="HideCameraButtonInfo">Опція \"Приховати кнопку камери\" також додає кнопку камери в нижню частину меню вкладених файлів</string>
+  <string name="IncreaseRecents">Збільшити кількість останніх стікерів</string>
+  <string name="hideMessagesBadge">Приховати значок непрочитаних повідомлень</string>
+  <string name="MoexCuteSettings">Трохи моє вже майже прибуло ~</string>
+  <string name="changeSizeLimit">Роздільна здатність фотографій</string>
+  <string name="changeSizeLimitInfo">Змінити роздільну здатність надісланих фотографій</string>
+  <string name="SizeLimitDesc">Ця функція є нестабільною і може спричиняти незначні помилки інтерфейсу. Змініть на **1280px** і очистіть кеш у налаштуваннях сховища, якщо ви помітили візуальні помилки з надісланими фотографіями.</string>
+  <string name="CopiedPhoto">Фотографію скопійовано в буфер обміну</string>
+  <string name="CopyPhoto">Скопіювати фотографію</string>
+  <string name="Repeat">Повторити</string>
+  <string name="RememberOptions">Запам\'ятати параметри надсилання</string>
+  <string name="RememberOptionsInfo">Запам\'ятати попередньо обрану опцію надсилання та встановити її за замовчуванням</string>
+  <string name="SquareAvatar">Квадратні кути аватарок</string>
+  <string name="MoexBlurDrawer">Розмити аватар</string>
+  <string name="TypingInstead">Надсилати статус вибору стікера</string>
+  <string name="TypingInsteadInfo" formatted="true">Це відправить статус **пише** замість **вибору** стікера</string>
+  <string name="DisableReactions">Приховати реакції</string>
+  <string name="HideMessagePanelButtons">Приховати кнопки панелі повідомлень</string>
+  <string name="HideBottomBar">Приховати нижню панель</string>
+  <string name="FileSize">Розмір файлу</string>
+  <string name="SenderId">Відправник</string>
+  <string name="MimeType">Тип Mime</string>
+  <string name="FileRes">Роздільна здатність файлу</string>
+  <string name="FilePerformer">Виконавець</string>
+  <string name="MoexDarkenDrawer">Затемнити аватар</string>
 </resources>

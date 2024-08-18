@@ -51,4 +51,20 @@
   <string name="ProfileOptions">Профиль</string>
   <string name="ActivityOptions">Активность</string>
   <string name="HideBottomBar">Скрыть нижнюю панель</string>
+  <string name="MsgDetails">Подробности</string>
+  <string name="Date">Дата</string>
+  <string name="SetId">Автор</string>
+  <string name="FilePath">Расположение</string>
+  <string name="FileSize">Размер</string>
+  <string name="SenderId">Отправитель</string>
+  <string name="MimeType">Mime</string>
+  <string name="FileRes">Разрешение</string>
+  <string name="FilePerformer">Исполнитель</string>
+  <string name="FileSongName">Название песни</string>
+  <string name="Document">Документ</string>
+  <string name="Chat">Чат</string>
+  <string name="Bitrate">Битрейт</string>
+  <string name="StoryId">Количество</string>
+  <string name="Edited">Изменено</string>
+  <string name="MoexDarkenDrawer">Затемнить аватар</string>
 </resources>

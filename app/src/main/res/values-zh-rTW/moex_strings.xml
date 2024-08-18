@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="MoexSettings">moeGramX 選項</string>
+  <string name="GeneralMoexSettings">一般設定</string>
+  <string name="InterfaceMoexSettings">介面</string>
+  <string name="ChatsMoexSettings">聊天</string>
+  <string name="MoexLinks">連結</string>
+  <string name="MoexChatText">聊天</string>
+  <string name="MoexChannelText">頻道</string>
+  <string name="MoexSourceText">原始碼</string>
+  <string name="MoexCategories">分類</string>
+  <string name="MoexHideButtons">訊息面板</string>
+  <string name="DisableCommandsButton">指令</string>
+  <string name="DisableCameraButton">相機</string>
+  <string name="DisableRecordButton">媒體</string>
+  <string name="MoexChatsSettings">聊天選項</string>
+  <string name="MoexStickersCount">貼圖</string>
+  <string name="DisableStickerTimestamp">隱藏貼圖傳送時間</string>
+  <string name="RoundedStickers">圓形貼圖</string>
+  <string name="hidePhoneNumber">隱藏手機號碼</string>
+  <string name="EnableFeatures">允許偵錯選項</string>
+  <string name="ExperimentalOptions">實驗性選項</string>
+  <string name="PhoneHidden">已隱藏手機號碼</string>
+  <string name="showIdProfile">在個人資料中顯示使用者識別碼</string>
+  <string name="DisableSendAsButton">頻道</string>
+  <string name="MobileHidden">已隱藏手機號碼</string>
+  <string name="MoexAbout">關於</string>
+  <string name="hideMessagesBadge">隱藏未讀訊息徽章</string>
+  <string name="changeSizeLimit">相片解析度</string>
+  <string name="CopyPhoto">複製相片</string>
+  <string name="Repeat">再次傳送</string>
+  <string name="changeHeaderText">標題文字</string>
+  <string name="RememberOptions">記住傳送選項</string>
+  <string name="MoexChatsHeader">聊天清單</string>
+  <string name="DisableReactions">隱藏表情符號</string>
+  <string name="ProfileOptions">個人資料</string>
+  <string name="ActivityOptions">活動</string>
+  <string name="HideBottomBar">隱藏底部列</string>
+</resources>
