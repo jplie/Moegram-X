@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.drinkless.tdlib.Client;
 import org.drinkless.tdlib.TdApi;
 import org.thunderdog.challegram.R;
+import org.thunderdog.challegram.U;
 import org.thunderdog.challegram.component.attach.CustomItemAnimator;
 import org.thunderdog.challegram.component.emoji.MediaStickersAdapter;
 import org.thunderdog.challegram.component.sticker.StickerPreviewView;
@@ -58,6 +59,7 @@ import org.thunderdog.challegram.unsorted.Size;
 import org.thunderdog.challegram.util.StringList;
 import org.thunderdog.challegram.v.RtlGridLayoutManager;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import me.vkryl.android.AnimatorUtils;
@@ -68,6 +70,7 @@ import me.vkryl.core.collection.LongList;
 import me.vkryl.core.lambda.CancellableRunnable;
 import me.vkryl.core.lambda.RunnableData;
 import me.vkryl.td.Td;
+import moe.kirao.mgx.utils.SystemUtils;
 
 public class StickersListController extends ViewController<StickersListController.StickerSetProvider> implements
   Menu, StickerSmallView.StickerMovementCallback, Client.ResultHandler,
@@ -847,6 +850,7 @@ public class StickersListController extends ViewController<StickersListControlle
     final boolean canWriteMessages = c instanceof MessagesController && ((MessagesController) c).canWriteMessages();
 
     final boolean needViewPackButton = sticker.needViewPackButton();
+    final boolean canBeSaved = sticker.isFullLoaded();
     final boolean isEmoji = sticker.isCustomEmoji();
 
     final @StringRes int sendText = isEmoji ? (canWriteMessages ? R.string.PasteCustomEmoji : R.string.ShareCustomEmoji) : R.string.SendSticker;
@@ -857,6 +861,11 @@ public class StickersListController extends ViewController<StickersListControlle
     if (needViewPackButton) {
       menuItems.add(new StickerPreviewView.MenuItem(StickerPreviewView.MenuItem.MENU_ITEM_TEXT,
         Lang.getString(R.string.ViewPackPreview).toUpperCase(), R.id.btn_view, ColorId.textNeutral));
+    }
+
+    if (canBeSaved) {
+      menuItems.add(new StickerPreviewView.MenuItem(StickerPreviewView.MenuItem.MENU_ITEM_TEXT,
+        Lang.getString(R.string.Save).toUpperCase(), R.id.btn_saveSticker, ColorId.textNeutral));
     }
   }
 
@@ -872,6 +881,14 @@ public class StickersListController extends ViewController<StickersListControlle
         tdlib.ui().showStickerSet(context, sticker.getStickerSetId(), null);
         stickerSmallView.closePreviewIfNeeded();
       }
+    } else if (viewId == R.id.btn_saveSticker) {
+      String mime = U.resolveMimeType(sticker.getSticker().sticker.local.path);
+      if (mime.equals("application/x-tgsticker")) {
+        TD.saveToDownloads(new File(sticker.getSticker().sticker.local.path), mime);
+      } else {
+        SystemUtils.saveFileToGallery(context(), sticker.getSticker().sticker.local.path);
+      }
+      stickerSmallView.closePreviewIfNeeded();
     }
   }
 }

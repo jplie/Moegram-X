@@ -39,8 +39,10 @@ import androidx.annotation.Nullable;
 
 import org.drinkless.tdlib.TdApi;
 import org.thunderdog.challegram.R;
+import org.thunderdog.challegram.U;
 import org.thunderdog.challegram.config.Config;
 import org.thunderdog.challegram.core.Lang;
+import org.thunderdog.challegram.data.TD;
 import org.thunderdog.challegram.data.TGReaction;
 import org.thunderdog.challegram.emoji.Emoji;
 import org.thunderdog.challegram.loader.ImageReceiver;
@@ -70,6 +72,7 @@ import org.thunderdog.challegram.util.EmojiString;
 import org.thunderdog.challegram.widget.NoScrollTextView;
 import org.thunderdog.challegram.widget.PopupLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import me.vkryl.android.AnimatorUtils;
@@ -80,6 +83,7 @@ import me.vkryl.core.lambda.Destroyable;
 import me.vkryl.td.Td;
 
 import moe.kirao.mgx.MoexConfig;
+import moe.kirao.mgx.utils.SystemUtils;
 
 public class StickerPreviewView extends FrameLayoutFix implements FactorAnimator.Target, PopupLayout.AnimatedPopupProvider, BackListener, Destroyable, ThemeChangeListener {
   private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(1f);
@@ -531,6 +535,17 @@ public class StickerPreviewView extends FrameLayoutFix implements FactorAnimator
             closePreviewIfNeeded();
           }
         }
+      } else if (viewId == R.id.btn_saveSticker) {
+        String mime = U.resolveMimeType(sticker.getSticker().sticker.local.path);
+        if (mime.equals("application/x-tgsticker")) {
+          TD.saveToDownloads(new File(sticker.getSticker().sticker.local.path), mime);
+        } else {
+          ViewController<?> context = findRoot();
+          if (context != null) {
+            SystemUtils.saveFileToGallery(context.context(), sticker.getSticker().sticker.local.path);
+          }
+        }
+        closePreviewIfNeeded();
       } else if (viewId == R.id.btn_removeRecent) {
         final int stickerId = sticker.getId();
         if (sticker.isCustomEmoji()) {
@@ -624,6 +639,24 @@ public class StickerPreviewView extends FrameLayoutFix implements FactorAnimator
         menu.addView(viewView, 0);
       else
         menu.addView(viewView);
+    }
+
+    if (sticker.isFullLoaded()) {
+      ImageView removeRecentView = new ImageView(getContext());
+      removeRecentView.setId(R.id.btn_saveSticker);
+      removeRecentView.setScaleType(ImageView.ScaleType.CENTER);
+      removeRecentView.setOnClickListener(onClickListener);
+      removeRecentView.setImageResource(R.drawable.baseline_file_download_24);
+      removeRecentView.setColorFilter(Theme.getColor(ColorId.textNeutral));
+      themeListenerList.addThemeFilterListener(removeRecentView, ColorId.textNeutral);
+      removeRecentView.setLayoutParams(new ViewGroup.LayoutParams(Screen.dp(48f), ViewGroup.LayoutParams.MATCH_PARENT));
+      removeRecentView.setPadding(Lang.rtl() ? Screen.dp(8f) : 0, 0, Lang.rtl() ? 0 : Screen.dp(8f), 0);
+      RippleSupport.setTransparentBlackSelector(removeRecentView);
+      Views.setClickable(removeRecentView);
+      if (Lang.rtl())
+        menu.addView(removeRecentView, 0);
+      else
+        menu.addView(removeRecentView);
     }
 
     if (sticker.isRecent()) {

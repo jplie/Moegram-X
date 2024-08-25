@@ -973,8 +973,8 @@ public class MessageView extends SparseDrawableView implements Destroyable, Draw
 
             if (msg.canBeSaved()) {
               String mime = baseDownloadedFile.getMimeType();
-              if (!StringUtils.isEmpty(mime) && mime.startsWith("image/")) {
-                ids.append(R.id.btn_savePhoto);
+              if (!StringUtils.isEmpty(mime) && (mime.startsWith("image/") || mime.startsWith("video/"))) {
+                ids.append(R.id.btn_saveDocument);
                 if (allMessages.length == 1) {
                   strings.append(R.string.SaveToGallery);
                 } else {
@@ -982,7 +982,8 @@ public class MessageView extends SparseDrawableView implements Destroyable, Draw
                 }
                 icons.append(R.drawable.baseline_image_24);
               }
-              if (baseDownloadedFile.getFileType() instanceof TdApi.FileTypeSticker) break;
+              if (baseDownloadedFile.getFileType() instanceof TdApi.FileTypeSticker
+                && !mime.equals("application/x-tgsticker")) break;
               ids.append(R.id.btn_saveFile);
               if (allMessages.length == 1) {
                 strings.append(R.string.SaveToDownloads);

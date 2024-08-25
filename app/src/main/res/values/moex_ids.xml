@@ -28,7 +28,6 @@
   <item name="btn_copyPhoto" type="id" />
   <item name="btn_saveSticker" type="id" />
   <item name="btn_msgRepeat" type="id" />
-  <item name="btn_savePhoto" type="id" />
   <item name="btn_rememberOptions" type="id" />
   <item name="btn_squareAvatar" type="id"/>
   <item name="btn_blurDrawer" type="id" />
@@ -62,4 +61,5 @@
   <item name="btn_mediaBitrate" type="id" />
   <item name="btn_storyId" type="id" />
   <item name="btn_darkenDrawer" type="id" />
+  <item name="btn_saveDocument" type="id" />
 </resources>

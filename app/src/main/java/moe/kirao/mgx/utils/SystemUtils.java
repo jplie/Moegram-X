@@ -45,11 +45,11 @@ public class SystemUtils {
     }
   }
 
-  public static void savePhotoToGallery (BaseActivity context, List<TD.DownloadedFile> files) {
+  public static void saveFileToGallery (BaseActivity context, List<TD.DownloadedFile> files) {
     try {
       if (context.permissions().requestWriteExternalStorage(Permissions.WriteType.GALLERY, granted -> {
         if (granted) {
-          savePhotoToGallery(context, files);
+          saveFileToGallery(context, files);
         }
       })) {
         return;
@@ -57,15 +57,55 @@ public class SystemUtils {
       Background.instance().post(() -> {
         int savedCount = 0;
         for (TD.DownloadedFile file : files) {
-          if (U.copyToGalleryImpl(file.getPath(), U.TYPE_PHOTO, null)) {
-            savedCount++;
+          if (file.getMimeType().startsWith("image/")) {
+            if (U.copyToGalleryImpl(file.getPath(), U.TYPE_PHOTO, null)) {
+              savedCount++;
+            }
+          } else if (file.getMimeType().startsWith("video/")) {
+            if (U.copyToGalleryImpl(file.getPath(), U.TYPE_VIDEO, null)) {
+              savedCount++;
+            }
           }
         }
         if (savedCount > 0) {
-          if (savedCount == 1)
+          if (savedCount == 1) {
+            String mime = files.get(0).getMimeType();
+            if (mime.startsWith("image/")) {
+              UI.showToast(R.string.PhotoHasBeenSavedToGallery, Toast.LENGTH_SHORT);
+            } else if (mime.startsWith("video/")) {
+              UI.showToast(R.string.VideoHasBeenSavedToGallery, Toast.LENGTH_SHORT);
+            } else {
+              UI.showToast(R.string.GifHasBeenSavedToGallery, Toast.LENGTH_SHORT);
+            }
+          } else {
+            UI.showToast(Lang.pluralBold(R.string.SavedXFiles, savedCount), Toast.LENGTH_SHORT);
+          }
+        }
+      });
+    } catch (Exception e) {
+      Log.e(e);
+    }
+  }
+
+  public static void saveFileToGallery (BaseActivity context, String path) {
+    try {
+      if (context.permissions().requestWriteExternalStorage(Permissions.WriteType.GALLERY, granted -> {
+        if (granted) {
+          saveFileToGallery(context, path);
+        }
+      })) {
+        return;
+      }
+      Background.instance().post(() -> {
+        String mime = U.resolveMimeType(path);
+        if (mime.startsWith("image/")) {
+          if (U.copyToGalleryImpl(path, U.TYPE_PHOTO, null)) {
             UI.showToast(R.string.PhotoHasBeenSavedToGallery, Toast.LENGTH_SHORT);
-          else
-            UI.showToast(Lang.pluralBold(R.string.XPhotoSaved, savedCount), Toast.LENGTH_SHORT);
+          }
+        } else if (mime.startsWith("video/")) {
+          if (U.copyToGalleryImpl(path, U.TYPE_VIDEO, null)) {
+            UI.showToast(R.string.VideoHasBeenSavedToGallery, Toast.LENGTH_SHORT);
+          }
         }
       });
     } catch (Exception e) {

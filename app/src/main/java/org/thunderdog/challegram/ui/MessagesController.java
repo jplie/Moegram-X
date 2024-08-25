@@ -5816,14 +5816,14 @@ public class MessagesController extends ViewController<MessagesController.Argume
           TD.saveFiles(context, (List<TD.DownloadedFile>) selectedMessageTag);
         }
         return true;
-      } else if (id == R.id.btn_savePhoto) {
+      } else if (id == R.id.btn_saveDocument) {
         if (selectedMessageTag != null) {
           if (!selectedMessage.canBeSaved()) {
             context().tooltipManager().builder(itemView).show(tdlib, R.string.ChannelNoSave).hideDelayed();
             return false;
           }
           //noinspection unchecked
-          SystemUtils.savePhotoToGallery(context, (List<TD.DownloadedFile>) selectedMessageTag);
+          SystemUtils.saveFileToGallery(context, (List<TD.DownloadedFile>) selectedMessageTag);
         }
       } else if (id == R.id.btn_copyPhoto) {
         TdApi.File file = TD.getFile(selectedMessage);
